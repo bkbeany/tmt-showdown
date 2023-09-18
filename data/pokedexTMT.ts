@@ -1,4 +1,98 @@
 export const Pokedex: {[speciesid: string]: SpeciesData} = {
+	// note: see the following link for the new TMT dex info
+	// https://docs.google.com/spreadsheets/d/1WxYmHs_ZsgzLUrL8WfEGN-JHdToubXHvi942ViDIG8k/edit?pli=1#gid=730393319
+	chikorita: {
+		num: 1,
+		name: "Chikorita",
+		types: ["Grass", "Bean"],
+		genderRatio: {M: 0.875, F: 0.125},
+		baseStats: {hp: 45, atk: 49, def: 65, spa: 49, spd: 65, spe: 45},
+		abilities: {0: "Overgrow", H: "Leaf Guard"},
+		heightm: 0.9,
+		weightkg: 6.4,
+		color: "Green",
+		evos: ["Bayleef"],
+		eggGroups: ["Monster", "Grass"],
+	},
+	bayleef: {
+		num: 2,
+		name: "Bayleef",
+		types: ["Grass", "Bean"],
+		genderRatio: {M: 0.875, F: 0.125},
+		baseStats: {hp: 60, atk: 62, def: 80, spa: 63, spd: 80, spe: 60},
+		abilities: {0: "Overgrow", H: "Leaf Guard"},
+		heightm: 1.2,
+		weightkg: 15.8,
+		color: "Green",
+		prevo: "Chikorita",
+		evoLevel: 16,
+		evos: ["Meganium"],
+		eggGroups: ["Monster", "Grass"],
+	},
+	meganium: {
+		num: 3,
+		name: "Meganium",
+		types: ["Grass", "Bean"],
+		genderRatio: {M: 0.875, F: 0.125},
+		baseStats: {hp: 80, atk: 82, def: 100, spa: 83, spd: 100, spe: 80},
+		abilities: {0: "Overgrow", H: "Leaf Guard"},
+		heightm: 1.8,
+		weightkg: 100.5,
+		color: "Green",
+		prevo: "Bayleef",
+		evoLevel: 32,
+		eggGroups: ["Monster", "Grass"],
+	},
+	fennekin: {
+		num: 4,
+		name: "Fennekin",
+		types: ["Fire", "Magic"],
+		genderRatio: {M: 0.875, F: 0.125},
+		baseStats: {hp: 40, atk: 45, def: 40, spa: 62, spd: 60, spe: 60},
+		abilities: {0: "Blaze", H: "Magician"},
+		heightm: 0.4,
+		weightkg: 9.4,
+		color: "Red",
+		evos: ["Braixen"],
+		eggGroups: ["Field"],
+	},
+	braixen: {
+		num: 5,
+		name: "Braixen",
+		types: ["Fire", "Magic"],
+		genderRatio: {M: 0.875, F: 0.125},
+		baseStats: {hp: 59, atk: 59, def: 58, spa: 90, spd: 70, spe: 73},
+		abilities: {0: "Blaze", H: "Magician"},
+		heightm: 1,
+		weightkg: 14.5,
+		color: "Red",
+		prevo: "Fennekin",
+		evoLevel: 16,
+		evos: ["Delphox"],
+		eggGroups: ["Field"],
+	},
+	delphox: {
+		num: 6,
+		name: "Delphox",
+		types: ["Fire", "Magic"],
+		genderRatio: {M: 0.875, F: 0.125},
+		baseStats: {hp: 75, atk: 69, def: 72, spa: 114, spd: 100, spe: 104},
+		abilities: {0: "Blaze", H: "Magician"},
+		heightm: 1.5,
+		weightkg: 39,
+		color: "Red",
+		prevo: "Braixen",
+		evoLevel: 36,
+		eggGroups: ["Field"],
+	},
+
+	/* 
+	*	
+	*
+	*	End of new TMT dex!!!
+	*
+	*
+	*/
 	bulbasaur: {
 		num: 1,
 		name: "Bulbasaur",
