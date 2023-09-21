@@ -264,6 +264,7 @@ export class ModdedDex {
 		switch (typeData.damageTaken[sourceType]) {
 		case 1: return 1; // super-effective
 		case 2: return -1; // resist
+		case 4: return 2; //4x super-effective
 		// in case of weird situations like Gravity, immunity is handled elsewhere
 		default: return 0;
 		}
