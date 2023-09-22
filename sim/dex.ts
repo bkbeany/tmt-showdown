@@ -236,7 +236,11 @@ export class ModdedDex {
 		const targetTyping: string[] | string = target.getTypes?.() || target.types || target;
 		if (Array.isArray(targetTyping)) {
 			for (const type of targetTyping) {
-				if (!this.getImmunity(sourceType, type)) return false;
+				if (!this.getImmunity(sourceType, type)) {
+					if (!(types.indexOf('Reverse') > -1)) {
+						return false;
+					}
+				}
 			}
 			return true;
 		}
@@ -262,9 +266,22 @@ export class ModdedDex {
 		const typeData = this.types.get(targetTyping);
 		if (!typeData) return 0;
 		switch (typeData.damageTaken[sourceType]) {
-		case 1: return 1; // super-effective
-		case 2: return -1; // resist
-		case 4: return 2; //4x super-effective
+		case 1: { 
+			if (types.indexOf('Reverse') > -1) return -1;
+			if (types.indexOf('Type') > -1) return 2;
+			return 1; // super-effective
+		}
+		case 2: {
+			if (types.indexOf('Reverse') > -1) return 1;
+			if (types.indexOf('Type') > -1) return -2;
+			return -1; // resist
+		}
+		case 3: if (types.indexOf('Reverse') > -1) return 1;
+		case 4: {
+			if (types.indexOf('Reverse') > -1) return -2;
+			if (types.indexOf('Type') > -1) return 4;
+			return 2; //4x super-effective
+		} 
 		// in case of weird situations like Gravity, immunity is handled elsewhere
 		default: return 0;
 		}
