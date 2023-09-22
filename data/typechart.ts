@@ -1894,6 +1894,7 @@ export const TypeChart: {[k: string]: TypeData} = {
 	},
 	Fluffy: {
 		damageTaken: {
+			frz: 3,
 			Bug: 2,
 			Dark: 0,
 			Dragon: 0,
@@ -2092,6 +2093,7 @@ export const TypeChart: {[k: string]: TypeData} = {
 	},
 	Bad: {
 		damageTaken: {
+			brn: 3,
 			Bug: 0,
 			Dark: 2,
 			Dragon: 0,
@@ -2224,6 +2226,7 @@ export const TypeChart: {[k: string]: TypeData} = {
 	},
 	Silly: {
 		damageTaken: {
+			confusion: 3,
 			Bug: 0,
 			Dark: 1,
 			Dragon: 2,
@@ -2686,6 +2689,7 @@ export const TypeChart: {[k: string]: TypeData} = {
 	},
 	Dream: {
 		damageTaken: {
+			slp: 3,
 			Bug: 0,
 			Dark: 2,
 			Dragon: 0,
@@ -2950,6 +2954,7 @@ export const TypeChart: {[k: string]: TypeData} = {
 	},
 	Gamer: {
 		damageTaken: {
+			sandstorm: 3,
 			Bug: 0,
 			Dark: 3,
 			Dragon: 0,
@@ -3016,6 +3021,7 @@ export const TypeChart: {[k: string]: TypeData} = {
 	},
 	Dance: {
 		damageTaken: {
+			par: 3,
 			Bug: 2,
 			Dark: 0,
 			Dragon: 0,
