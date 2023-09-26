@@ -21688,4 +21688,193 @@ export const Moves: {[moveid: string]: MoveData} = {
 		type: "Pikachu",
 		contestType: "Cool",
 	},
+	dabmeup: {
+		num: 950,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Dab Me Up",
+		pp: 20,
+		priority: 5,
+		flags: {bypasssub: 1, noassist: 1, failcopycat: 1},
+		volatileStatus: 'helpinghand',
+		onTryHit(target) {
+			if (!target.newlySwitched && !this.queue.willMove(target)) return false;
+		},
+		condition: {
+			duration: 1,
+			onStart(target, source) {
+				this.effectState.multiplier = 1.5;
+				this.add('-singleturn', target, 'Helping Hand', '[of] ' + source);
+			},
+			onRestart(target, source) {
+				this.effectState.multiplier *= 1.5;
+				this.add('-singleturn', target, 'Helping Hand', '[of] ' + source);
+			},
+			onBasePowerPriority: 10,
+			onBasePower(basePower) {
+				this.debug('Boosting from Helping Hand: ' + this.effectState.multiplier);
+				return this.chainModify(this.effectState.multiplier);
+			},
+		},
+		secondary: null,
+		target: "adjacentAlly",
+		type: "Guys",
+		zMove: {effect: 'clearnegativeboost'},
+		contestType: "Clever",
+	},
+	sabotage: {
+		num: 951,
+		accuracy: 100,
+		basePower: 0,
+		category: "Status",
+		name: "Sabotage",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1, sound: 1, bypasssub: 1},
+		onHit(target, source, move) {
+			const success = this.boost({atk: -1, spa: -1}, target, source);
+			if (!success && !target.hasAbility('mirrorarmor')) {
+				delete move.selfSwitch;
+			}
+		},
+		selfSwitch: true,
+		secondary: null,
+		target: "normal",
+		type: "Sus",
+		zMove: {effect: 'healreplacement'},
+		contestType: "Cool",
+	},
+	starstrike: {
+		num: 952,
+		accuracy: 100,
+		basePower: 90,
+		category: "Special",
+		name: "Starstrike",
+		pp: 15,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		secondary: null,
+		target: "normal",
+		type: "Space",
+	},
+	apeescape: {
+		num: 953,
+		accuracy: 100,
+		basePower: 70,
+		category: "Physical",
+		name: "Ape Escape",
+		pp: 20,
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1},
+		selfSwitch: true,
+		secondary: null,
+		target: "normal",
+		type: "Monke",
+	},
+	stinkbomb: {
+		num: 954,
+		accuracy: 100,
+		basePower: 40,
+		category: "Special",
+		name: "Stink Bomb",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		secondary: {
+			chance: 100,
+			boosts: {
+				def: -1,
+			},
+		},
+		target: "normal",
+		type: "Stinky",
+	},
+	oogabooga: {
+		num: 955,
+		accuracy: 100,
+		basePower: 40,
+		category: "Physical",
+		name: "Ooga Booga",
+		pp: 35,
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1},
+		secondary: null,
+		target: "normal",
+		type: "Monke",
+	},
+	ungabunga: {
+		num: 956,
+		accuracy: 100,
+		basePower: 70,
+		category: "Physical",
+		name: "Ooga Booga",
+		pp: 35,
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1},
+		secondary: null,
+		target: "normal",
+		type: "Monke",
+	},
+	bananablitz: {
+		num: 957,
+		accuracy: 100,
+		basePower: 120,
+		category: "Physical",
+		name: "Banana Blitz",
+		pp: 15,
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1},
+		recoil: [1, 3],
+		secondary: null,
+		target: "normal",
+		type: "Monke",
+	},
+	uhohstinky: {
+		num: 958,
+		accuracy: 90,
+		basePower: 0,
+		category: "Status",
+		name: "Uh Oh Stinky",
+		pp: 40,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1},
+		status: 'psn',
+		secondary: null,
+		target: "allAdjacentFoes",
+		type: "Stinky",
+		zMove: {boost: {def: 1}},
+		contestType: "Clever",
+	},
+	transrights: {
+		num: 959,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Trans Rights",
+		pp: 10,
+		priority: 0,
+		flags: {charge: 1, nonsky: 1, nosleeptalk: 1, failinstruct: 1},
+		onTryMove(attacker, defender, move) {
+			if (attacker.removeVolatile(move.id)) {
+				return;
+			}
+			this.add('-prepare', attacker, move.name);
+			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+				return;
+			}
+			attacker.addVolatile('twoturnmove', defender);
+			return null;
+		},
+		boosts: {
+			spa: 2,
+			spd: 2,
+			spe: 2,
+		},
+		secondary: null,
+		target: "self",
+		type: "Gender",
+		zMove: {boost: {atk: 1, def: 1, spa: 1, spd: 1, spe: 1}},
+		contestType: "Beautiful",
+	},
 };
