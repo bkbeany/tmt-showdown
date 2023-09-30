@@ -21877,4 +21877,479 @@ export const Moves: {[moveid: string]: MoveData} = {
 		zMove: {boost: {atk: 1, def: 1, spa: 1, spd: 1, spe: 1}},
 		contestType: "Beautiful",
 	},
+	doublejump: {
+		num: 965,
+		accuracy: 85,
+		basePower: 85,
+		category: "Physical",
+		name: "Double Jump",
+		pp: 5,
+		priority: 0,
+		flags: {
+			contact: 1, charge: 1, protect: 1, mirror: 1, gravity: 1, distance: 1, nosleeptalk: 1, noassist: 1, failinstruct: 1,
+		},
+		onTryMove(attacker, defender, move) {
+			if (attacker.removeVolatile(move.id)) {
+				return;
+			}
+			this.add('-prepare', attacker, move.name);
+			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+				return;
+			}
+			attacker.addVolatile('twoturnmove', defender);
+			return null;
+		},
+		condition: {
+			duration: 2,
+			onInvulnerability(target, source, move) {
+				if (['gust', 'twister', 'skyuppercut', 'thunder', 'hurricane', 'smackdown', 'thousandarrows'].includes(move.id)) {
+					return;
+				}
+				return false;
+			},
+			onSourceBasePower(basePower, target, source, move) {
+				if (move.id === 'gust' || move.id === 'twister') {
+					return this.chainModify(2);
+				}
+			},
+		},
+		secondary: {
+			chance: 30,
+			status: 'par',
+		},
+		target: "any",
+		type: "Gender",
+		contestType: "Cute",
+	},
+	wavedash: {
+		num: 966,
+		accuracy: 100,
+		basePower: 50,
+		category: "Physical",
+		name: "Wave Dash",
+		pp: 30,
+		priority: 1,
+		flags: {contact: 1, protect: 1, mirror: 1},
+		secondary: null,
+		target: "normal",
+		type: "Gender",
+		contestType: "Cool",
+	},
+	impeach: {
+		num: 967,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Impeach",
+		pp: 40,
+		priority: 0,
+		flags: {gravity: 1},
+		onTry(source, target, move) {
+			// Additional Gravity check for Z-move variant
+			if (this.field.getPseudoWeather('Gravity')) {
+				this.add('cant', source, 'move: Gravity', move);
+				return null;
+			}
+		},
+		onTryHit(target, source) {
+			this.add('-nothing');
+		},
+		secondary: null,
+		target: "self",
+		type: "Left",
+		zMove: {boost: {atk: 3}},
+		contestType: "Cute",
+	},
+	deport: {
+		num: 968,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Deport",
+		pp: 20,
+		priority: -6,
+		flags: {reflectable: 1, mirror: 1, wind: 1, bypasssub: 1, allyanim: 1, noassist: 1, failcopycat: 1},
+		forceSwitch: true,
+		secondary: null,
+		target: "normal",
+		type: "Right",
+		zMove: {boost: {def: 1}},
+		contestType: "Cool",
+	},
+	brownnote: {
+		num: 969,
+		accuracy: 90,
+		basePower: 0,
+		category: "Status",
+		name: "Brown Note",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1,  sound: 1},
+		status: 'par',
+		ignoreImmunity: false,
+		secondary: null,
+		target: "normal",
+		type: "Stinky",
+		zMove: {boost: {spd: 1}},
+		contestType: "Cool",
+	},
+	shoot: {
+		num: 970,
+		accuracy: 100,
+		basePower: 160,
+		category: "Physical",
+		name: "Shoot",
+		pp: 5,
+		priority: 0,
+		flags: {protect: 1, mirror: 1, cantusetwice: 1, bullet: 1},
+		secondary: null,
+		target: "normal",
+		type: "Gun",
+	},
+	content: {
+		num: 971,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Content",
+		pp: 20,
+		priority: 0,
+		flags: {failencore: 1, nosleeptalk: 1, noassist: 1, failcopycat: 1, failinstruct: 1, failmimic: 1},
+		noMetronome: [
+			"After You", "Apple Acid", "Armor Cannon", "Assist", "Astral Barrage", "Aura Wheel", "Baneful Bunker", "Beak Blast", "Behemoth Bash", "Behemoth Blade", "Belch", "Bestow", "Blazing Torque", "Body Press", "Branch Poke", "Breaking Swipe", "Celebrate", "Chatter", "Chilling Water", "Chilly Reception", "Clangorous Soul", "Collision Course", "Combat Torque", "Comeuppance", "Copycat", "Counter", "Covet", "Crafty Shield", "Decorate", "Destiny Bond", "Detect", "Diamond Storm", "Doodle", "Double Iron Bash", "Double Shock", "Dragon Ascent", "Dragon Energy", "Drum Beating", "Dynamax Cannon", "Electro Drift", "Endure", "Eternabeam", "False Surrender", "Feint", "Fiery Wrath", "Fillet Away", "Fleur Cannon", "Focus Punch", "Follow Me", "Freeze Shock", "Freezing Glare", "Glacial Lance", "Grav Apple", "Helping Hand", "Hold Hands", "Hyper Drill", "Hyperspace Fury", "Hyperspace Hole", "Ice Burn", "Instruct", "Jet Punch", "Jungle Healing", "King's Shield", "Life Dew", "Light of Ruin", "Magical Torque", "Make It Rain", "Mat Block", "Me First", "Meteor Assault", "Metronome", "Mimic", "Mind Blown", "Mirror Coat", "Mirror Move", "Moongeist Beam", "Nature Power", "Nature's Madness", "Noxious Torque", "Obstruct", "Order Up", "Origin Pulse", "Overdrive", "Photon Geyser", "Plasma Fists", "Population Bomb", "Pounce", "Power Shift", "Precipice Blades", "Protect", "Pyro Ball", "Quash", "Quick Guard", "Rage Fist", "Rage Powder", "Raging Bull", "Raging Fury", "Relic Song", "Revival Blessing", "Ruination", "Salt Cure", "Secret Sword", "Shed Tail", "Shell Trap", "Silk Trap", "Sketch", "Sleep Talk", "Snap Trap", "Snarl", "Snatch", "Snore", "Snowscape", "Spectral Thief", "Spicy Extract", "Spiky Shield", "Spirit Break", "Spotlight", "Springtide Storm", "Steam Eruption", "Steel Beam", "Strange Steam", "Struggle", "Sunsteel Strike", "Surging Strikes", "Switcheroo", "Techno Blast", "Thief", "Thousand Arrows", "Thousand Waves", "Thunder Cage", "Thunderous Kick", "Tidy Up", "Trailblaze", "Transform", "Trick", "Twin Beam", "V-create", "Wicked Blow", "Wicked Torque", "Wide Guard",
+		],
+		yesContent: [
+			"Volt Tackle", "Rocket Punch", "Pika_Bolt", "Pikattack", "Pika Protect", "Self Destruct", "Explosion", "Misty Explosion", "Guillotine", "Horn Drill", "Fissure", "Sheer Cold", "The Bite of 87", "Hyper Beam", "Blast Burn", "Hydro Cannon", "Frenzy Plant", "Giga Impact", "Rock Wrecker", "Roar of Time", "Prismatic Laser", "Meteor Assault", "Eternabeam", "Wedding Cake", "Belly Drum", "Memento", "Dragon Dance", "Crab Rave", "Rootin Tootin", "Quiver Dance", "Soak", "Magic Powder", "Carcinization", "Back to Monke", "Babify", "Final Gambit", "Trick or Treat", "Forest's Curse", "Uno Reverse", "Singularity", "Retrograde", "Hyperspace Fury", "No Retreat",
+		],
+		onHit(target, source, effect) {
+			const moves = this.dex.moves.all().filter(move => (
+				(![2, 4].includes(this.gen) || !source.moves.includes(move.id)) &&
+				!move.realMove && !move.isZ && !move.isMax &&
+				(!move.isNonstandard || move.isNonstandard === 'Unobtainable') &&
+				!effect.noMetronome!.includes(move.name) && !effect.yesContent.includes(move.name)
+			));
+			let randomMove = '';
+			if (moves.length) {
+				moves.sort((a, b) => a.num - b.num);
+				randomMove = this.sample(moves).id;
+			}
+			if (!randomMove) return false;
+			source.side.lastSelectedMove = this.toID(randomMove);
+			this.actions.useMove(randomMove, target);
+		},
+		secondary: null,
+		target: "self",
+		type: "Prime",
+		contestType: "Cute",
+	},
+	pillowfight: {
+		num: 972,
+		accuracy: 85,
+		basePower: 15,
+		category: "Physical",
+		isNonstandard: "Past",
+		name: "Pillow Fight",
+		pp: 10,
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1},
+		multihit: [2, 5],
+		secondary: null,
+		target: "normal",
+		type: "Guys",
+		contestType: "Cute",
+	},
+	kissthehomies: {
+		num: 973,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Kiss the Homies",
+		pp: 10,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, distance: 1, heal: 1, allyanim: 1},
+		onHit(target, source) {
+			let success = false;
+			if (source.hasAbility('megalauncher')) {
+				success = !!this.heal(this.modify(target.baseMaxhp, 0.75));
+			} else {
+				success = !!this.heal(Math.ceil(target.baseMaxhp * 0.5));
+			}
+			if (success && !target.isAlly(source)) {
+				target.staleness = 'external';
+			}
+			if (!success) {
+				this.add('-fail', target, 'heal');
+				return this.NOT_FAIL;
+			}
+			return success;
+		},
+		secondary: null,
+		target: "any",
+		type: "Guys",
+		zMove: {effect: 'clearnegativeboost'},
+		contestType: "Beautiful",
+	},
+	weddingcake: {
+		num: 974,
+		accuracy: 90,
+		basePower: 150,
+		category: "Physical",
+		name: "Wedding Cake",
+		pp: 5,
+		priority: 0,
+		flags: {recharge: 1, protect: 1, mirror: 1},
+		self: {
+			volatileStatus: 'mustrecharge',
+		},
+		secondary: null,
+		target: "normal",
+		type: "Silly",
+		contestType: "Cool",
+	},
+	hypnogoggles: {
+		num: 975,
+		accuracy: 60,
+		basePower: 0,
+		category: "Status",
+		name: "Hypno Goggles",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1},
+		status: 'slp',
+		secondary: null,
+		target: "normal",
+		type: "Silly",
+		zMove: {boost: {spe: 1}},
+		contestType: "Clever",
+	},
+	dollaronabill: {
+		num: 976,
+		accuracy: 85,
+		basePower: 0,
+		category: "Status",
+		name: "Dollar on a Bill",
+		pp: 15,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1, allyanim: 1},
+		volatileStatus: 'confusion',
+		boosts: {
+			atk: 2,
+		},
+		secondary: null,
+		target: "normal",
+		type: "Silly",
+		zMove: {effect: 'clearnegativeboost'},
+		contestType: "Cute",
+	},
+	fillabuster: {
+		num: 977,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Fillabuster",
+		pp: 10,
+		priority: 4,
+		flags: {noassist: 1, failcopycat: 1},
+		stallingMove: true,
+		volatileStatus: 'protect',
+		onPrepareHit(pokemon) {
+			return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
+		},
+		onHit(pokemon) {
+			pokemon.addVolatile('stall');
+		},
+		condition: {
+			duration: 1,
+			onStart(target) {
+				this.add('-singleturn', target, 'Protect');
+			},
+			onTryHitPriority: 3,
+			onTryHit(target, source, move) {
+				if (!move.flags['protect']) {
+					if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
+					if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
+					return;
+				}
+				if (move.smartTarget) {
+					move.smartTarget = false;
+				} else {
+					this.add('-activate', target, 'move: Protect');
+				}
+				const lockedmove = source.getVolatile('lockedmove');
+				if (lockedmove) {
+					// Outrage counter is reset
+					if (source.volatiles['lockedmove'].duration === 2) {
+						delete source.volatiles['lockedmove'];
+					}
+				}
+				return this.NOT_FAIL;
+			},
+		},
+		secondary: null,
+		target: "self",
+		type: "Right",
+		zMove: {effect: 'clearnegativeboost'},
+		contestType: "Cute",
+	},
+	squirtingflower: {
+		num: 978,
+		accuracy: true,
+		basePower: 60,
+		category: "Special",
+		name: "Cut",
+		pp: 20,
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1, slicing: 1},
+		secondary: null,
+		target: "normal",
+		type: "Silly",
+		contestType: "Cool",
+	},
+	hug: {
+		num: 979,
+		accuracy: 100,
+		basePower: 0,
+		category: "Status",
+		name: "Hug",
+		pp: 30,
+		priority: 1,
+		flags: {protect: 1, reflectable: 1, mirror: 1, allyanim: 1},
+		boosts: {
+			atk: -1,
+		},
+		secondary: null,
+		target: "normal",
+		type: "Friend",
+		zMove: {boost: {def: 1}},
+		contestType: "Cute",
+	},
+	imposter: {
+		num: 980,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Imposter",
+		pp: 10,
+		priority: 0,
+		flags: {snatch: 1, nonsky: 1},
+		volatileStatus: 'substitute',
+		onTryHit(source) {
+			if (source.volatiles['substitute']) {
+				this.add('-fail', source, 'move: Substitute');
+				return this.NOT_FAIL;
+			}
+			if (source.hp <= source.maxhp / 4 || source.maxhp === 1) { // Shedinja clause
+				this.add('-fail', source, 'move: Substitute', '[weak]');
+				return this.NOT_FAIL;
+			}
+		},
+		onHit(target) {
+			this.directDamage(target.maxhp / 4);
+		},
+		condition: {
+			onStart(target, source, effect) {
+				if (effect?.id === 'shedtail') {
+					this.add('-start', target, 'Substitute', '[from] move: Shed Tail');
+				} else {
+					this.add('-start', target, 'Substitute');
+				}
+				this.effectState.hp = Math.floor(target.maxhp / 4);
+				if (target.volatiles['partiallytrapped']) {
+					this.add('-end', target, target.volatiles['partiallytrapped'].sourceEffect, '[partiallytrapped]', '[silent]');
+					delete target.volatiles['partiallytrapped'];
+				}
+			},
+			onTryPrimaryHitPriority: -1,
+			onTryPrimaryHit(target, source, move) {
+				if (target === source || move.flags['bypasssub'] || move.infiltrates) {
+					return;
+				}
+				let damage = this.actions.getDamage(source, target, move);
+				if (!damage && damage !== 0) {
+					this.add('-fail', source);
+					this.attrLastMove('[still]');
+					return null;
+				}
+				damage = this.runEvent('SubDamage', target, source, move, damage);
+				if (!damage) {
+					return damage;
+				}
+				if (damage > target.volatiles['substitute'].hp) {
+					damage = target.volatiles['substitute'].hp as number;
+				}
+				target.volatiles['substitute'].hp -= damage;
+				source.lastDamage = damage;
+				if (target.volatiles['substitute'].hp <= 0) {
+					if (move.ohko) this.add('-ohko');
+					target.removeVolatile('substitute');
+				} else {
+					this.add('-activate', target, 'move: Substitute', '[damage]');
+				}
+				if (move.recoil || move.id === 'chloroblast') {
+					this.damage(this.actions.calcRecoilDamage(damage, move, source), source, target, 'recoil');
+				}
+				if (move.drain) {
+					this.heal(Math.ceil(damage * move.drain[0] / move.drain[1]), source, target, 'drain');
+				}
+				this.singleEvent('AfterSubDamage', move, null, target, source, move, damage);
+				this.runEvent('AfterSubDamage', target, source, move, damage);
+				return this.HIT_SUBSTITUTE;
+			},
+			onEnd(target) {
+				this.add('-end', target, 'Substitute');
+			},
+		},
+		secondary: null,
+		target: "self",
+		type: "Sus",
+		zMove: {effect: 'clearnegativeboost'},
+		contestType: "Cute",
+	},
+	wombocombo: {
+		num: 981,
+		accuracy: 100,
+		basePower: 60,
+		basePowerCallback(target, source, move) {
+			if (move.sourceEffect === 'round') {
+				this.debug('BP doubled');
+				return move.basePower * 2;
+			}
+			return move.basePower;
+		},
+		category: "Physical",
+		name: "Wombo Combo",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		onTry(source, target, move) {
+			for (const action of this.queue.list as MoveAction[]) {
+				if (!action.pokemon || !action.move || action.maxMove || action.zmove) continue;
+				if (action.move.id === 'round') {
+					this.queue.prioritizeAction(action, move);
+					return;
+				}
+			}
+		},
+		secondary: null,
+		target: "normal",
+		type: "Gamer",
+		contestType: "Beautiful",
+	},
+	toonup: {
+		num: 982,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Toon Up",
+		pp: 10,
+		priority: 0,
+		flags: {heal: 1, bypasssub: 1, allyanim: 1, snatch: 1},
+		onHit(pokemon) {
+			const success = !!this.heal(this.modify(pokemon.maxhp, 0.25));
+			return pokemon.cureStatus() || success;
+		},
+		secondary: null,
+		target: "allies",
+		type: "Silly",
+	},
 };
