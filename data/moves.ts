@@ -22352,4 +22352,345 @@ export const Moves: {[moveid: string]: MoveData} = {
 		target: "allies",
 		type: "Silly",
 	},
+	metalpipe: {
+		num: 983,
+		accuracy: 100,
+		basePower: 50,
+		category: "Physical",
+		name: "Metal Pipe",
+		pp: 15,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		secondary: {
+			chance: 100,
+			boosts: {
+				def: -1,
+			},
+		},
+		target: "normal",
+		type: "Zoomer",
+	},
+	rawrxd: {
+		num: 984,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Rawr XD",
+		pp: 20,
+		priority: -6,
+		flags: {reflectable: 1, mirror: 1, bypasssub: 1, allyanim: 1, noassist: 1, failcopycat: 1},
+		forceSwitch: true,
+		secondary: null,
+		target: "normal",
+		type: "Gamer",
+	},
+	thebiteof87: {
+		num: 985,
+		accuracy: 30,
+		basePower: 0,
+		category: "Physical",
+		name: "Guillotine",
+		pp: 5,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		ohko: true,
+		secondary: null,
+		target: "normal",
+		type: "Gamer",
+	},
+	fossilize: {
+		num: 986,
+		accuracy: 100,
+		basePower: 40,
+		category: "Physical",
+		name: "Bite",
+		pp: 25,
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1},
+		secondary: {
+			chance: 20,
+			volatileStatus: 'flinch',
+		},
+		target: "normal",
+		type: "Ancient",
+	},
+	peeyew: {
+		num: 987,
+		accuracy: 100,
+		basePower: 20,
+		category: "Special",
+		name: "Mud-Slap",
+		pp: 10,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		secondary: {
+			chance: 100,
+			boosts: {
+				accuracy: -1,
+			},
+		},
+		target: "normal",
+		type: "Stinky",
+	},
+	summonkimchi: {
+		num: 988,
+		accuracy: 100,
+		basePower: 85,
+		category: "Special",
+		name: "Summon Kimchi",
+		pp: 15,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		secondary: null,
+		target: "normal",
+		type: "Stinky",
+	},
+	axe: {
+		num: 989,
+		accuracy: 100,
+		basePower: 60,
+		category: "Special",
+		name: "Axe",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		secondary: {
+			chance: 10,
+			status: 'par',
+		},
+		target: "normal",
+		type: "Normal",
+	},
+	screenpeek: {
+		num: 990,
+		accuracy: 100,
+		basePower: 130,
+		category: "Special",
+		name: "Screen Peek",
+		pp: 5,
+		priority: 2,
+		flags: {charge: 1, protect: 1, mirror: 1, nosleeptalk: 1, failinstruct: 1},
+		onTryMove(attacker, defender, move) {
+			if (attacker.removeVolatile(move.id)) {
+				return;
+			}
+			this.add('-prepare', attacker, move.name);
+			if (!this.runEvent('ChargeMove', attacker, defender, move)) {
+				return;
+			}
+			attacker.addVolatile('twoturnmove', defender);
+			return null;
+		},
+		secondary: null,
+		target: "normal",
+		type: "Gamer",
+	},
+	rocketpunch: {
+		num: 991,
+		accuracy: 100,
+		basePower: 60,
+		category: "Physical",
+		name: "Mach Punch",
+		pp: 30,
+		priority: 1,
+		flags: {contact: 1, protect: 1, mirror: 1, punch: 1},
+		secondary: null,
+		target: "normal",
+		type: "Pikachu",
+	},
+	pikabolt: {
+		num: 992,
+		accuracy: 100,
+		basePower: 95,
+		category: "Special",
+		name: "Pikabolt",
+		pp: 15,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		secondary: {
+			chance: 20,
+			status: 'par',
+		},
+		target: "normal",
+		type: "Pikachu",
+	},
+	barearms: {
+		num: 993,
+		accuracy: 100,
+		basePower: 100,
+		category: "Physical",
+		name: "Bare Arms",
+		pp: 5,
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1, punch:1},
+		self: {
+			boosts: {
+				def: -1,
+				spd: -1,
+			},
+		},
+		secondary: null,
+		target: "normal",
+		type: "Right",
+	},
+	pikattack: {
+		num: 994,
+		accuracy: 100,
+		basePower: 85,
+		category: "Physical",
+		name: "Pikattack",
+		pp: 15,
+		priority: 0,
+		flags: {contact: 1, protect: 1, mirror: 1, nonsky: 1},
+		secondary: {
+			chance: 30,
+			status: 'par',
+		},
+		target: "normal",
+		type: "Pikachu",
+	},
+	pikaprotect: {
+		num: 995,
+		accuracy: true,
+		basePower: 0,
+		category: "Status",
+		name: "Pika Protect",
+		pp: 10,
+		priority: 4,
+		flags: {noassist: 1, failcopycat: 1},
+		stallingMove: true,
+		volatileStatus: 'protect',
+		onPrepareHit(pokemon) {
+			return !!this.queue.willAct() && this.runEvent('StallMove', pokemon);
+		},
+		onHit(pokemon) {
+			pokemon.addVolatile('stall');
+		},
+		condition: {
+			duration: 1,
+			onStart(target) {
+				this.add('-singleturn', target, 'Protect');
+			},
+			onTryHitPriority: 3,
+			onTryHit(target, source, move) {
+				if (!move.flags['protect']) {
+					if (['gmaxoneblow', 'gmaxrapidflow'].includes(move.id)) return;
+					if (move.isZ || move.isMax) target.getMoveHitData(move).zBrokeProtect = true;
+					return;
+				}
+				if (move.smartTarget) {
+					move.smartTarget = false;
+				} else {
+					this.add('-activate', target, 'move: Protect');
+				}
+				const lockedmove = source.getVolatile('lockedmove');
+				if (lockedmove) {
+					// Outrage counter is reset
+					if (source.volatiles['lockedmove'].duration === 2) {
+						delete source.volatiles['lockedmove'];
+					}
+				}
+				return this.NOT_FAIL;
+			},
+		},
+		secondary: null,
+		target: "self",
+		type: "Pikachu",
+	},
+	peerpressire: {
+		num: 996,
+		accuracy: 100,
+		basePower: 110,
+		category: "Special",
+		name: "Fire Blast",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		target: "normal",
+		type: "Guys",
+	},
+	carcinization: {
+		num: 997,
+		accuracy: 100,
+		basePower: 0,
+		category: "Status",
+		name: "Carcinization",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1, allyanim: 1},
+		onHit(target) {
+			if (target.getTypes().join() === 'Crab' || !target.setType('Crab')) {
+				// Soak should animate even when it fails.
+				// Returning false would suppress the animation.
+				this.add('-fail', target);
+				return null;
+			}
+			this.add('-start', target, 'typechange', 'Crab');
+		},
+		secondary: null,
+		target: "normal",
+		type: "Crab",
+	},
+	backtomonke: {
+		num: 998,
+		accuracy: 100,
+		basePower: 0,
+		category: "Status",
+		name: "Back To Monke",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1, allyanim: 1},
+		onHit(target) {
+			if (target.getTypes().join() === 'Monke' || !target.setType('Monke')) {
+				// Soak should animate even when it fails.
+				// Returning false would suppress the animation.
+				this.add('-fail', target);
+				return null;
+			}
+			this.add('-start', target, 'typechange', 'Monke');
+		},
+		secondary: null,
+		target: "normal",
+		type: "Monke",
+	},
+	babify: {
+		num: 999,
+		accuracy: 100,
+		basePower: 0,
+		category: "Status",
+		name: "Babify",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1, allyanim: 1},
+		onHit(target) {
+			if (target.getTypes().join() === 'Baby' || !target.setType('Baby')) {
+				// Soak should animate even when it fails.
+				// Returning false would suppress the animation.
+				this.add('-fail', target);
+				return null;
+			}
+			this.add('-start', target, 'typechange', 'Baby');
+		},
+		secondary: null,
+		target: "normal",
+		type: "Baby",
+	},
+	unoreverse: {
+		num: 1000,
+		accuracy: 100,
+		basePower: 0,
+		category: "Status",
+		name: "Uno Reverse",
+		pp: 20,
+		priority: 0,
+		flags: {protect: 1, reflectable: 1, mirror: 1, allyanim: 1},
+		onHit(target) {
+			if (target.hasType('Reverse')) return false;
+			if (!target.addType('Reverse')) return false;
+			this.add('-start', target, 'typeadd', 'Reverse', '[from] move: Uno Reverse');
+		},
+		secondary: null,
+		target: "normal",
+		type: "Reverse",
+	},
 };
